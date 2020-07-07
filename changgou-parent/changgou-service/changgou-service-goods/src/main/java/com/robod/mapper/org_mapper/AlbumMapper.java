@@ -1,4 +1,4 @@
-package com.robod.mapper;
+package com.robod.mapper.org_mapper;
 
 import com.robod.goods.pojo.Album;
 import org.apache.ibatis.annotations.*;
@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Robod
@@ -21,9 +20,9 @@ public interface AlbumMapper {
      * @return
      */
     @Select("select * from tb_album")
-    @Results(id = "map",
-            value = @Result(property = "imageItems", column = "image_items")
-    )
+//    @Results(id = "map",
+//            value = @Result(property = "imageItems", column = "image_items")
+//    )
     public List<Album> findAll();
 
     /**
@@ -33,7 +32,7 @@ public interface AlbumMapper {
      * @return
      */
     @Select("select * from tb_album where id = #{id} limit 1")
-    @ResultMap("map")
+//    @ResultMap("map")
     public Album findById(long id);
 
     /**

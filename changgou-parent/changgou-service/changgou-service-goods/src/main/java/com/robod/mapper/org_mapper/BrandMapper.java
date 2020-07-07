@@ -1,4 +1,4 @@
-package com.robod.mapper;
+package com.robod.mapper.org_mapper;
 
 import com.robod.goods.pojo.Brand;
 import org.apache.commons.lang.StringUtils;

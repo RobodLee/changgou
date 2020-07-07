@@ -2,7 +2,6 @@ package com.robod.service.intf;
 
 import com.github.pagehelper.PageInfo;
 import com.robod.goods.pojo.Brand;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

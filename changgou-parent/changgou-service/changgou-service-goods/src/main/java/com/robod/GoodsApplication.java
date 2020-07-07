@@ -12,7 +12,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @SpringBootApplication
 @EnableEurekaClient //开启Eureka客户端
-@MapperScan("com.robod.mapper")
+@MapperScan("com.robod.mapper.org_mapper")
+@tk.mybatis.spring.annotation.MapperScan("com.robod.mapper.tk_mapper")
 @EnableTransactionManagement
 public class GoodsApplication {
     public static void main(String[] args) {

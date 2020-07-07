@@ -24,6 +24,13 @@
             <version>1.18.10</version>
             <scope>provided</scope>
         </dependency>
+        <!--每个工程都有Pojo，都需要用到该包对应的注解-->
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>

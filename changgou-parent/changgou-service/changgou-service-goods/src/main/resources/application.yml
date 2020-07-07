@@ -17,3 +17,6 @@ eureka:
 feign:
   hystrix:
     enabled: true
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true #自动将以下画线方式命名的数据库列映射到 Java 对象的驼峰式命名属性中

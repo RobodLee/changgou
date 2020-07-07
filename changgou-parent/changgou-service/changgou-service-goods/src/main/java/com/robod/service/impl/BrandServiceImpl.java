@@ -3,7 +3,7 @@ package com.robod.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.robod.goods.pojo.Brand;
-import com.robod.mapper.BrandMapper;
+import com.robod.mapper.org_mapper.BrandMapper;
 import com.robod.service.intf.BrandService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
