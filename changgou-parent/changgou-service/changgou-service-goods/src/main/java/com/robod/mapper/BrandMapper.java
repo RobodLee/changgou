@@ -66,20 +66,22 @@ public interface BrandMapper {
 
     class BrandMapperProvider {
         public String findList(Brand brand) {
-            StringBuilder builder = new StringBuilder("select * from tb_brand where ");
-            if (!StringUtils.isEmpty(brand.getName())) {
-                builder.append(" name like ").append("\"%").append(brand.getName()).append("%\" ");
+            StringBuilder builder = new StringBuilder("select * from tb_brand where 0=0 ");
+            if (brand != null) {
+                if (!StringUtils.isEmpty(brand.getName())) {
+                    builder.append(" and name like ").append("\"%").append(brand.getName()).append("%\" ");
+                }
+                if (!StringUtils.isEmpty(brand.getImage())) {
+                    builder.append(" and image like ").append("\"%").append(brand.getImage()).append("%\" ");
+                }
+                if (!StringUtils.isEmpty(brand.getLetter())) {
+                    builder.append(" and letter = ").append(" \"").append(brand.getLetter()).append("\" ");
+                }
+                if (brand.getSeq() != null) {
+                    builder.append(" and seq = ").append(brand.getSeq());
+                }
             }
-            if (!StringUtils.isEmpty(brand.getImage())) {
-                builder.append(" and image like ").append("\"%").append(brand.getImage()).append("%\" ");
-            }
-            if (!StringUtils.isEmpty(brand.getLetter())) {
-                builder.append(" and letter = ").append(" \"").append(brand.getLetter()).append("\" ");
-            }
-            if (brand.getSeq() != null) {
-                builder.append(" and seq = ").append(brand.getSeq());
-            }
-            System.out.println(builder.toString());
+
             return builder.toString();
         }
     }

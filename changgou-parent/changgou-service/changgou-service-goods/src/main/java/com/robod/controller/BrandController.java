@@ -91,7 +91,7 @@ public class BrandController {
      * @return
      */
     @PostMapping("/search")
-    public Result<List<Brand>> findList(@RequestBody Brand brand) {
+    public Result<List<Brand>> findList(@RequestBody(required = false) Brand brand) {
         List<Brand> brands = brandService.findList(brand);
         return new Result<>(true, StatusCode.OK, "条件查询成功", brands);
     }
@@ -118,7 +118,7 @@ public class BrandController {
      */
     @PostMapping("/search/{page}/{size}")
     public Result<PageInfo<Brand>> findPage
-            (@RequestBody Brand brand, @PathVariable("page") int page, @PathVariable("size") int size) {
+            (@RequestBody(required = false) Brand brand, @PathVariable("page") int page, @PathVariable("size") int size) {
         PageInfo<Brand> brandPageInfo = brandService.findPage(brand,page, size);
         return new Result<>(true, StatusCode.OK, "条件查询成功", brandPageInfo);
     }
