@@ -3,7 +3,7 @@ package com.robod.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.robod.goods.pojo.Template;
-import com.robod.mapper.tk_mapper.TemplateMapper;
+import com.robod.mapper.TemplateMapper;
 import com.robod.service.intf.TemplateService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.robod.mapper.org_mapper;
+package com.robod.mapper;
 
 import com.robod.goods.pojo.Album;
 import org.apache.ibatis.annotations.*;

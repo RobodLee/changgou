@@ -1,25 +1,34 @@
 package com.robod.goods.pojo;
 
-
 import lombok.Data;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
 /****
  * @author robod
  *****/
 @Data
-public class Spec implements Serializable {
+@Table(name="tb_spec")
+public class Spec implements Serializable{
 
-    //ID
-    private Integer id;
-    //名称
-    private String name;
-    //规格选项
-    private String options;
-    //排序
-    private Integer seq;
-    //模板ID
-    private Integer templateId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;//ID
+
+    @Column(name = "name")
+    private String name;//名称
+
+    @Column(name = "options")
+    private String options;//规格选项
+
+    @Column(name = "seq")
+    private Integer seq;//排序
+
+    @Column(name = "template_id")
+    private Integer templateId;//模板ID
+
+
 
 }

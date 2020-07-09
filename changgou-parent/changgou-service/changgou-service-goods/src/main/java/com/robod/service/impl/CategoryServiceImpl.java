@@ -3,7 +3,7 @@ package com.robod.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.robod.goods.pojo.Category;
-import com.robod.mapper.tk_mapper.CategoryMapper;
+import com.robod.mapper.CategoryMapper;
 import com.robod.service.intf.CategoryService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -149,8 +149,8 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
-    public Category findById(Integer id){
-        return  categoryMapper.selectByPrimaryKey(id);
+    public Category findById(int id){
+        return  categoryMapper.findById(id);
     }
 
     /**
@@ -168,8 +168,6 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public List<Category> findByParentId(Integer pid) {
-        Category category = new Category();
-        category.setParentId(pid);
-        return categoryMapper.select(category);
+        return categoryMapper.findByParentId(pid);
     }
 }

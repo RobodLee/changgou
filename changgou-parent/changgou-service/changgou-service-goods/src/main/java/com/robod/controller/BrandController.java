@@ -122,4 +122,16 @@ public class BrandController {
         PageInfo<Brand> brandPageInfo = brandService.findPage(brand,page, size);
         return new Result<>(true, StatusCode.OK, "条件查询成功", brandPageInfo);
     }
+
+    /**
+     * 根据分类id查询对应的品牌集合
+     * @param categoryId
+     * @return
+     * Controller层 BrandController.java
+     */
+    @GetMapping("/category/{id}")
+    public Result<List<Brand>> findByCategory(@PathVariable("id") int categoryId) {
+        List<Brand> brands = brandService.findByCategory(categoryId);
+        return new Result<>(true,StatusCode.OK,"查询成功",brands);
+    }
 }

@@ -1,4 +1,4 @@
-package com.robod.mapper.tk_mapper;
+package com.robod.mapper;
 
 import com.robod.goods.pojo.Template;
 import org.springframework.stereotype.Repository;

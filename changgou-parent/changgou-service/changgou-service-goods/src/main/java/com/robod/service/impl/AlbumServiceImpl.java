@@ -3,7 +3,7 @@ package com.robod.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.robod.goods.pojo.Album;
-import com.robod.mapper.org_mapper.AlbumMapper;
+import com.robod.mapper.AlbumMapper;
 import com.robod.service.intf.AlbumService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

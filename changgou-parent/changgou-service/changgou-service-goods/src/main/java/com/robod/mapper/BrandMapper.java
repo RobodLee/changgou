@@ -1,4 +1,4 @@
-package com.robod.mapper.org_mapper;
+package com.robod.mapper;
 
 import com.robod.goods.pojo.Brand;
 import org.apache.commons.lang.StringUtils;
@@ -63,6 +63,16 @@ public interface BrandMapper {
      */
     @SelectProvider(type = BrandMapperProvider.class, method = "findList")
     public List<Brand> findList(Brand brand);
+
+    /**
+     * 根据分类id查询对应的品牌集合
+     * @param categoryId
+     * @return
+     * Dao层 BrandMapper.java
+     */
+    @Select("SELECT * FROM tb_brand WHERE id IN " +
+            "(SELECT brand_id FROM tb_category_brand WHERE category_id=#{categoryId})")
+    public List<Brand> findByCategory(int categoryId);
 
     class BrandMapperProvider {
         public String findList(Brand brand) {

@@ -3,7 +3,7 @@ package com.robod.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.robod.goods.pojo.Brand;
-import com.robod.mapper.org_mapper.BrandMapper;
+import com.robod.mapper.BrandMapper;
 import com.robod.service.intf.BrandService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,5 +66,10 @@ public class BrandServiceImpl implements BrandService {
         PageHelper.startPage(page,size);
         List<Brand> brands = brandMapper.findList(brand);
         return new PageInfo<>(brands);
+    }
+
+    @Override
+    public List<Brand> findByCategory(int categoryId) {
+        return brandMapper.findByCategory(categoryId);
     }
 }

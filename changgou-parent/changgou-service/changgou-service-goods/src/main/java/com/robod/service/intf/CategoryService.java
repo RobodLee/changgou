@@ -58,7 +58,7 @@ public interface CategoryService {
      * @param id
      * @return
      */
-    Category findById(Integer id);
+    Category findById(int id);
 
     /***
      * 查询所有Category

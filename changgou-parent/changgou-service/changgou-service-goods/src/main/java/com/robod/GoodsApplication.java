@@ -1,6 +1,6 @@
 package com.robod;
 
-import org.mybatis.spring.annotation.MapperScan;
+import tk.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -12,8 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @SpringBootApplication
 @EnableEurekaClient //开启Eureka客户端
-@MapperScan("com.robod.mapper.org_mapper")
-@tk.mybatis.spring.annotation.MapperScan("com.robod.mapper.tk_mapper")
+@MapperScan("com.robod.mapper")
 @EnableTransactionManagement
 public class GoodsApplication {
     public static void main(String[] args) {
