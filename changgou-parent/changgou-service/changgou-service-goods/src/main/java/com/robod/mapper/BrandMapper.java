@@ -4,6 +4,7 @@ import com.robod.goods.pojo.Brand;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @date 2020/7/2 9:09
  */
 @Repository("brandMapper")
-public interface BrandMapper {
+public interface BrandMapper extends Mapper<Brand> {
 
     /**
      * 查询所有的品牌信息
@@ -53,7 +54,7 @@ public interface BrandMapper {
      * @param id
      */
     @Delete("delete from tb_brand where id = #{id}")
-    public void delete(Integer id);
+    public void deleteBrand(Integer id);
 
     /**
      * 条件查询
@@ -91,7 +92,6 @@ public interface BrandMapper {
                     builder.append(" and seq = ").append(brand.getSeq());
                 }
             }
-
             return builder.toString();
         }
     }

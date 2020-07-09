@@ -2,9 +2,11 @@ package com.robod.goods.pojo;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /****
  * @author robod
@@ -42,10 +44,10 @@ public class Sku implements Serializable{
     private Integer weight;//重量（克）
 
     @Column(name = "create_time")
-    private Date createTime;//创建时间
+    private LocalDateTime createTime;//创建时间
 
     @Column(name = "update_time")
-    private Date updateTime;//更新时间
+    private LocalDateTime updateTime;//更新时间
 
     @Column(name = "spu_id")
     private Long spuId;//SPUID

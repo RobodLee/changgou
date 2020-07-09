@@ -46,7 +46,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public void delete(Integer id) {
-        brandMapper.delete(id);
+        brandMapper.deleteBrand(id);
     }
 
     @Override
