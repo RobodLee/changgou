@@ -77,16 +77,36 @@ public interface SpuService {
      * 审核商品
      * @param id
      */
-    void auditSpu(Long id);
+    void auditSpu(long id);
+
+    /**
+     * 上架商品
+     * @param id
+     */
+    void putSpu(long id);
+
+    /**
+     * 批量上架商品
+     * @param ids
+     * @return
+     */
+    int putMany(long[] ids);
 
     /**
      * 下架
      * @param id
      */
-    void pullSpu(Long id);
+    void pullSpu(long id);
+
+    /**
+     * 批量下架商品
+     * @param ids
+     */
+    int pullMany(long[] ids);
 
     void logicDeleteSpu(Long id);
 
 
     void restoreSpu(Long id);
+
 }

@@ -153,15 +153,53 @@ public class SpuController {
      * @return
      */
     @PutMapping("/audit/{id}")
-    public Result auditSpu(@PathVariable(name="id")Long id){
+    public Result auditSpu(@PathVariable(name="id")long id){
         spuService.auditSpu(id);
         return new Result(true,StatusCode.OK,"审核通过");
     }
 
+    /**
+     * 上架商品
+     * @param id
+     * @return
+     */
+    @PutMapping("/put/{id}")
+    public Result putSpu(@PathVariable long id){
+        spuService.putSpu(id);
+        return new Result(true,StatusCode.OK,"上架成功");
+    }
+
+    /**
+     * 批量上架商品
+     * @param ids
+     * @return
+     */
+    @PutMapping("/put/many")
+    public Result putMany(@RequestBody long[] ids){
+        int successNum = spuService.putMany(ids);
+        return new Result(true,StatusCode.OK,successNum+"款商品上架成功");
+    }
+
+    /**
+     * 下架商品
+     * @param id
+     * @return
+     */
     @PutMapping("/pull/{id}")
-    public Result pullSpu(@PathVariable(name="id")Long id){
+    public Result pullSpu(@PathVariable long id){
         spuService.pullSpu(id);
         return new Result(true,StatusCode.OK,"下架成功");
+    }
+
+    /**
+     * 批量下架商品
+     * @param ids
+     * @return
+     */
+    @PutMapping("/pull/many")
+    public Result pullMany(@RequestBody long[] ids){
+        int successNum = spuService.pullMany(ids);
+        return new Result(true,StatusCode.OK,successNum+"款商品下架成功");
     }
 
     @DeleteMapping("/logic/delete/{id}")
@@ -175,8 +213,5 @@ public class SpuController {
         spuService.restoreSpu(id);
         return new Result(true,StatusCode.OK,"还原成功");
     }
-
-
-
 
 }
