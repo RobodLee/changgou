@@ -3,7 +3,6 @@ package com.robod.canal;
 import com.alibaba.otter.canal.protocol.CanalEntry;
 import com.xpand.starter.canal.annotation.*;
 
-
 /**
  * @author Robod
  * @date 2020/7/14 10:47

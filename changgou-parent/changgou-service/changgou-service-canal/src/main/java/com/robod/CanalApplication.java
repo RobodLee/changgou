@@ -8,7 +8,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * @author Robod
- * @date 2020/7/13 22:40
+ * @date 2020/7/14 16:20
  */
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 @EnableEurekaClient
