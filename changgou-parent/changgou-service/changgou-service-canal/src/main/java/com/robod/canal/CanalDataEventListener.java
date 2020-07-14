@@ -1,7 +1,14 @@
 package com.robod.canal;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.otter.canal.protocol.CanalEntry;
-import com.xpand.starter.canal.annotation.*;
+import com.robod.content.feign.ContentFeign;
+import com.robod.content.pojo.Content;
+import com.xpand.starter.canal.annotation.CanalEventListener;
+import com.xpand.starter.canal.annotation.ListenPoint;
+import org.springframework.data.redis.core.StringRedisTemplate;
+
+import java.util.List;
 
 /**
  * @author Robod
@@ -10,48 +17,50 @@ import com.xpand.starter.canal.annotation.*;
  */
 @CanalEventListener
 public class CanalDataEventListener {
+    private final ContentFeign contentFeign;
+    private final StringRedisTemplate stringRedisTemplate;
 
-    /***
-     * 增加数据监听
+    public CanalDataEventListener(ContentFeign contentFeign, StringRedisTemplate stringRedisTemplate) {
+        this.contentFeign = contentFeign;
+        this.stringRedisTemplate = stringRedisTemplate;
+    }
+
+    /**
+     * 监听数据变化，将数据写到Redis中
      * @param eventType
      * @param rowData
      */
-    @InsertListenPoint
-    public void onEventInsert(CanalEntry.EventType eventType, CanalEntry.RowData rowData) {
-        rowData.getAfterColumnsList().forEach((c) -> System.out.println("By--Annotation: " + c.getName() + " ::   " + c.getValue()));
+    @ListenPoint(
+            destination = "example",
+            schema = "changgou_content",
+            table = {"tb_content","tb_content_category"},
+            eventType = {
+                    CanalEntry.EventType.INSERT,
+                    CanalEntry.EventType.UPDATE,
+                    CanalEntry.EventType.DELETE}
+    )
+    public void onEventListener(CanalEntry.EventType eventType, CanalEntry.RowData rowData) {
+        String categoryId = getColumnValue(eventType,rowData);
+        List<Content> contents = contentFeign.findByCategoryId(Long.parseLong(categoryId)).getData();
+        stringRedisTemplate.boundValueOps("content_"+categoryId).set(JSON.toJSONString(contents));
     }
 
-    /***
-     * 修改数据监听
-     * @param rowData
-     */
-    @UpdateListenPoint
-    public void onEventUpdate(CanalEntry.RowData rowData) {
-        System.out.println("UpdateListenPoint");
-        rowData.getAfterColumnsList().forEach((c) -> System.out.println("By--Annotation: " + c.getName() + " ::   " + c.getValue()));
-    }
-
-    /***
-     * 删除数据监听
-     * @param eventType
-     */
-    @DeleteListenPoint
-    public void onEventDelete(CanalEntry.EventType eventType,CanalEntry.RowData rowData) {
-
-        System.out.println("DeleteListenPoint");
-        for (CanalEntry.Column column : rowData.getBeforeColumnsList()) {
-            System.out.println(column.getValue());
+    private String getColumnValue(CanalEntry.EventType eventType, CanalEntry.RowData rowData) {
+        if (eventType == CanalEntry.EventType.UPDATE || eventType == CanalEntry.EventType.INSERT) {
+            for (CanalEntry.Column column : rowData.getAfterColumnsList()) {
+                if ("category_id".equalsIgnoreCase(column.getName())) {
+                    return column.getValue();
+                }
+            }
         }
+        if (eventType == CanalEntry.EventType.DELETE) {
+            for (CanalEntry.Column column : rowData.getBeforeColumnsList()) {
+                if ("category_id".equalsIgnoreCase(column.getName())) {
+                    return column.getValue();
+                }
+            }
+        }
+        return "";
     }
 
-    /***
-     * 自定义数据修改监听
-     * @param eventType
-     * @param rowData
-     */
-    @ListenPoint(destination = "example", schema = "changgou_content", table = {"tb_content_category", "tb_content"}, eventType = CanalEntry.EventType.UPDATE)
-    public void onEventCustomUpdate(CanalEntry.EventType eventType, CanalEntry.RowData rowData) {
-        System.err.println("DeleteListenPoint");
-        rowData.getAfterColumnsList().forEach((c) -> System.out.println("By--Annotation: " + c.getName() + " ::   " + c.getValue()));
-    }
 }

@@ -1,11 +1,13 @@
 server:
-  port: 18083
+  port: 18084
 spring:
   application:
-    name: canal
-  redis:
-    host: 192.168.31.200
-    port: 6379
+    name: content
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.31.200:3306/changgou_content?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
 eureka:
   client:
     service-url:
@@ -15,6 +17,10 @@ eureka:
 feign:
   hystrix:
     enabled: true
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true  #开启驼峰功能
+
 #hystrix 配置
 hystrix:
   command:
@@ -25,10 +31,7 @@ hystrix:
           enabled: true
         isolation:
           strategy: SEMAPHORE
-#canal配置
-canal:
-  client:
-    instances:
-      example:
-        host: 192.168.31.200
-        port: 11111
+
+logging:
+  level:
+    com: debug  # 不加这个MyBatis Log插件不打印sql语句
