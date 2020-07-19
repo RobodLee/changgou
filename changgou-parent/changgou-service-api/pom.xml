@@ -12,6 +12,7 @@
     <modules>
         <module>changgou-service-goods-api</module>
         <module>changgou-service-content-api</module>
+        <module>changgou-service-search-api</module>
     </modules>
     <artifactId>changgou-service-api</artifactId>
     <description>
