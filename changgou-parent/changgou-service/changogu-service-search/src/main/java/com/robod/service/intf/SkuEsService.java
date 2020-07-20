@@ -1,5 +1,7 @@
 package com.robod.service.intf;
 
+import com.robod.entity.SearchEntity;
+
 /**
  * @author Robod
  * @date 2020/7/19 18:17
@@ -11,4 +13,10 @@ public interface SkuEsService {
      */
     void importData();
 
+    /**
+     * 根据关键词搜索
+     * @param keywords
+     * @return
+     */
+    SearchEntity searchByKeywords(String keywords);
 }
