@@ -33,12 +33,12 @@ public class SkuEsController {
 
     /**
      * 根据关键词搜索
-     * @param keywords
+     * @param searchEntity
      * @return
      */
     @GetMapping
-    public Result<SearchEntity> searchByKeywords(@RequestParam(required = false)String keywords) {
-        SearchEntity searchEntity = skuEsService.searchByKeywords(keywords);
-        return new Result<>(true,StatusCode.OK,"根据关键词搜索成功",searchEntity);
+    public Result<SearchEntity> searchByKeywords(@RequestBody(required = false) SearchEntity searchEntity) {
+        SearchEntity result = skuEsService.searchByKeywords(searchEntity);
+        return new Result<>(true,StatusCode.OK,"根据关键词搜索成功",result);
     }
 }

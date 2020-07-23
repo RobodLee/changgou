@@ -33,7 +33,7 @@ public class SkuInfo implements Serializable {
      * analyzer 创建索引的分词器
      * searchAnalyzer 搜索时使用的分词器
      */
-    @Field(type = FieldType.Text, analyzer = "ik_smart",searchAnalyzer = "ik_smart")
+    @Field(type = FieldType.Text, analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")
     private String name;
 
     @Field(type = FieldType.Double)

@@ -15,8 +15,8 @@ public interface SkuEsService {
 
     /**
      * 根据关键词搜索
-     * @param keywords
+     * @param searchEntity
      * @return
      */
-    SearchEntity searchByKeywords(String keywords);
+    SearchEntity searchByKeywords(SearchEntity searchEntity);
 }
