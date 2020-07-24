@@ -7,12 +7,23 @@ import com.robod.goods.feign.SkuFeign;
 import com.robod.goods.pojo.Sku;
 import com.robod.mapper.SkuEsMapper;
 import com.robod.service.intf.SkuEsService;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.SearchResultMapper;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
+import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
@@ -30,6 +41,8 @@ public class SkuEsServiceImpl implements SkuEsService {
     private final SkuEsMapper skuEsMapper;
     private final SkuFeign skuFeign;
     private final ElasticsearchTemplate elasticsearchTemplate;
+
+    private static final int SEARCH_PAGE_SIZE = 10;
 
     public SkuEsServiceImpl(SkuEsMapper skuEsMapper, SkuFeign skuFeign, ElasticsearchTemplate elasticsearchTemplate) {
         this.skuEsMapper = skuEsMapper;
@@ -53,6 +66,12 @@ public class SkuEsServiceImpl implements SkuEsService {
     public SearchEntity searchByKeywords(SearchEntity searchEntity) {
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
 
+        HighlightBuilder.Field field = new HighlightBuilder.Field("name");  //指定域
+        field.preTags("<em style=\"color:red;\">"); //指定前缀
+        field.postTags("</em>");    //指定后缀
+        field.fragmentSize(100);
+        nativeSearchQueryBuilder.withHighlightFields(field);
+
         if (searchEntity != null && !StringUtils.isEmpty(searchEntity.getKeywords())) {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             nativeSearchQueryBuilder.withQuery(QueryBuilders.queryStringQuery(searchEntity.getKeywords()).field("name"));
@@ -70,25 +89,59 @@ public class SkuEsServiceImpl implements SkuEsService {
                         ("brands_grouping").field("brandName").size(10000));
             }
             if (!StringUtils.isEmpty(searchEntity.getPrice())) {
-                String[] price = searchEntity.getPrice().replace("元","")
-                        .replace("以上","").split("-");
+                String[] price = searchEntity.getPrice().replace("元", "")
+                        .replace("以上", "").split("-");
                 boolQueryBuilder.filter(QueryBuilders.rangeQuery("price").gte(Integer.parseInt(price[0])));
-                if (price.length>1){
+                if (price.length > 1) {
                     boolQueryBuilder.filter(QueryBuilders.rangeQuery("price").lt(Integer.parseInt(price[1])));
                 }
             }
-            Map<String,String> searchSpec = searchEntity.getSearchSpec();
+            Map<String, String> searchSpec = searchEntity.getSearchSpec();
             if (searchSpec != null && searchSpec.size() > 0) {
-                for (String key:searchSpec.keySet()){
-                    boolQueryBuilder.filter(QueryBuilders.termQuery("specMap."+key+".keyword",searchSpec.get(key)));
+                for (String key : searchSpec.keySet()) {
+                    boolQueryBuilder.filter(QueryBuilders.termQuery("specMap." + key + ".keyword", searchSpec.get(key)));
                 }
+            }
+            int pageNum = 1;
+            if (!StringUtils.isEmpty(searchEntity.getPageNum())) {
+                pageNum = Integer.parseInt(searchEntity.getPageNum());
+            }
+            nativeSearchQueryBuilder.withPageable(PageRequest.of(pageNum - 1, SEARCH_PAGE_SIZE));
+            String sortField = searchEntity.getSortField();
+            String sortRule = searchEntity.getSortRule();
+            if (!StringUtils.isEmpty(sortField) && !StringUtils.isEmpty(sortRule)) {
+                nativeSearchQueryBuilder.withSort(SortBuilders.fieldSort(sortField).order(SortOrder.valueOf(sortRule)));
             }
             nativeSearchQueryBuilder.addAggregation(AggregationBuilders.terms
                     ("spec_grouping").field("spec.keyword").size(10000));
             nativeSearchQueryBuilder.withQuery(boolQueryBuilder);
             NativeSearchQuery nativeSearchQuery = nativeSearchQueryBuilder.build();
+
             AggregatedPage<SkuInfo> skuInfos = elasticsearchTemplate
-                    .queryForPage(nativeSearchQuery, SkuInfo.class);
+                    .queryForPage(nativeSearchQuery, SkuInfo.class, new SearchResultMapper() {
+                        @Override
+                        public <T> AggregatedPage<T> mapResults(SearchResponse response, Class<T> clazz, Pageable pageable) {
+                            List<T> list = new ArrayList<>();
+                            for (SearchHit hit : response.getHits()) {  //遍历所有数据
+                                SkuInfo skuInfo = JSON.parseObject(hit.getSourceAsString(), SkuInfo.class);//非高亮数据
+                                HighlightField highlightField = hit.getHighlightFields().get("name");      //高亮数据
+                                if (highlightField != null && highlightField.getFragments() != null) {
+                                    Text[] fragments = highlightField.getFragments();
+                                    StringBuilder builder = new StringBuilder();
+                                    for (Text fragment : fragments) {
+                                        System.out.println("-----------------------");
+                                        System.out.println(fragment.toString());
+                                        builder.append(fragment.toString());
+                                    }
+                                    skuInfo.setName(builder.toString());
+                                }
+                                list.add((T) skuInfo);
+                            }
+                            return new AggregatedPageImpl<T>(list,pageable,response.getHits().getTotalHits());
+                        }
+                    });
+//            AggregatedPage<SkuInfo> skuInfos = elasticsearchTemplate
+//                    .queryForPage(nativeSearchQuery, SkuInfo.class);
             StringTerms categoryTerms = skuInfos.getAggregations()
                     .get("categories_grouping");
             StringTerms brandTerms = skuInfos.getAggregations()

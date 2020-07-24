@@ -20,7 +20,13 @@ public class SearchEntity {
 
     private String category;    //前端传过来的分类信息
 
+    private String pageNum;     //需要第几页的数据
+
     private String price;       //前端穿过来的价格区间字符串 300-500元   3000元以上
+
+    private String sortField;   //指定要排序的域
+
+    private String sortRule;    //指定要排序的方式 ASC/DESC
 
     private Map<String,String> searchSpec;  //前端传过来的规格信息
 
