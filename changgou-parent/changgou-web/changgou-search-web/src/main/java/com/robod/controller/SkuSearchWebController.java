@@ -1,7 +1,7 @@
 package com.robod.controller;
 
 import com.robod.entity.SearchEntity;
-import com.robod.feign.SkuFeign;
+import com.robod.feign.SkuEsFeign;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/search")
-public class SkuController {
+public class SkuSearchWebController {
 
-    private final SkuFeign skuFeign;
+    private final SkuEsFeign skuFeign;
 
-    public SkuController(SkuFeign skuFeign) {
+    public SkuSearchWebController(SkuEsFeign skuFeign) {
         this.skuFeign = skuFeign;
     }
 
