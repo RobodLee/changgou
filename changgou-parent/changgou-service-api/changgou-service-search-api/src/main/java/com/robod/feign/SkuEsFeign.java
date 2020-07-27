@@ -1,10 +1,11 @@
 package com.robod.feign;
 
+import com.robod.entity.Result;
 import com.robod.entity.SearchEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Robod
@@ -20,5 +21,5 @@ public interface SkuEsFeign {
      * @return
      */
     @GetMapping
-    SearchEntity searchByKeywords(@RequestParam(required = false) SearchEntity searchEntity);
+    Result<SearchEntity> searchByKeywords(@RequestBody(required = false) SearchEntity searchEntity);
 }

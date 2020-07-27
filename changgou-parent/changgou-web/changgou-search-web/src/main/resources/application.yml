@@ -19,3 +19,14 @@ spring:
     prefix: classpath:/templates/
     suffix: .html   #后缀
     cache: false    #禁止缓存
+
+ribbon:
+  ReadTimeout: 500000   # Feign请求读取数据超时时间
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 50000   # feign连接超时时间

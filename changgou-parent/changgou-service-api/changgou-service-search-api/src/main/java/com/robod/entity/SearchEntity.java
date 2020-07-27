@@ -45,6 +45,10 @@ public class SearchEntity {
     public SearchEntity() {
     }
 
+    public SearchEntity(String keywords) {
+        this.keywords = keywords;
+    }
+
     public SearchEntity(long total, int totalPages, List<String> categoryList,
                         List<String> brandList, Map<String, Set<String>> specMap, List<SkuInfo> rows) {
         this.total = total;
