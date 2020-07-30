@@ -1,6 +1,7 @@
 package com.robod.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.robod.entity.Page;
 import com.robod.entity.SearchEntity;
 import com.robod.entity.SkuInfo;
 import com.robod.goods.feign.SkuFeign;
@@ -18,6 +19,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -97,9 +99,9 @@ public class SkuEsServiceImpl implements SkuEsService {
                 }
             }
             //分页
-            int pageNum = (!StringUtils.isEmpty(searchEntity.getPageNum()))
-                    ? (Integer.parseInt(searchEntity.getPageNum())) : 1;
-            nativeSearchQueryBuilder.withPageable(PageRequest.of(pageNum - 1, SEARCH_PAGE_SIZE));
+            int searchPage = (!StringUtils.isEmpty(searchEntity.getSearchPage()))
+                    ? (Integer.parseInt(searchEntity.getSearchPage())) : 1;
+            nativeSearchQueryBuilder.withPageable(PageRequest.of(searchPage - 1, SEARCH_PAGE_SIZE));
             //排序
             String sortField = searchEntity.getSortField();
             String sortRule = searchEntity.getSortRule();
@@ -111,14 +113,20 @@ public class SkuEsServiceImpl implements SkuEsService {
                     .withQuery(QueryBuilders.queryStringQuery(searchEntity.getKeywords()).field("name"))
                     .withFilter(boolQueryBuilder);  //这两行顺序不能颠倒
 
+            NativeSearchQuery nativeSearchQuery = nativeSearchQueryBuilder.build();
+
             AggregatedPage<SkuInfo> skuInfos = elasticsearchTemplate
-                    .queryForPage(nativeSearchQueryBuilder.build(), SkuInfo.class, new SearchResultMapperImpl());
+                    .queryForPage(nativeSearchQuery, SkuInfo.class, new SearchResultMapperImpl());
 
             Aggregations aggregations = skuInfos.getAggregations();
             List<String> categoryList = buildGroupList(aggregations.get("categories_grouping"));
             List<String> brandList = buildGroupList(aggregations.get("brands_grouping"));
             Map<String, Set<String>> specMap = specGroup(aggregations.get("spec_grouping"));
 
+            Page<SkuInfo> pageInfo = new Page<>(skuInfos.getTotalElements(),
+                    skuInfos.getPageable().getPageNumber()+1,
+                    skuInfos.getPageable().getPageSize());
+            searchEntity.setPageInfo(pageInfo);
             searchEntity.setTotal(skuInfos.getTotalElements());
             searchEntity.setTotalPages(skuInfos.getTotalPages());
             searchEntity.setCategoryList(categoryList);

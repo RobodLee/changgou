@@ -1,5 +1,6 @@
 server:
   port: 18086
+
 eureka:
   client:
     service-url:
@@ -30,3 +31,7 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 50000   # feign连接超时时间
+
+#logging:
+#  level:
+#    com: debug
