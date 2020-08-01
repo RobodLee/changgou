@@ -2,10 +2,11 @@ package com.robod.feign;
 
 import com.robod.entity.Result;
 import com.robod.entity.SearchEntity;
+import com.robod.goods.pojo.Sku;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author Robod
@@ -22,4 +23,20 @@ public interface SkuEsFeign {
      */
     @GetMapping
     Result<SearchEntity> searchByKeywords(@RequestBody(required = false) SearchEntity searchEntity);
+
+    /**
+     * 删除Sku集合
+     * @param list
+     * @return
+     */
+    @DeleteMapping
+    Result deleteList(@RequestBody List<Sku> list);
+
+    /**
+     * 修改Sku集合
+     * @param list
+     * @return
+     */
+    @PostMapping
+    Result updateList(@RequestBody List<Sku> list);
 }

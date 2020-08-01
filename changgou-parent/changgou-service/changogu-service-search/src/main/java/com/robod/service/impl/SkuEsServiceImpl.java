@@ -138,6 +138,24 @@ public class SkuEsServiceImpl implements SkuEsService {
         return null;
     }
 
+    @Override
+    public void deleteList(List<Sku> list) {
+        for (Sku sku : list) {
+            skuEsMapper.deleteById(sku.getId());
+        }
+    }
+
+    @Override
+    public void updateList(List<Sku> list) {
+        List<SkuInfo> skuInfos = JSON.parseArray(JSON.toJSONString(list), SkuInfo.class);
+        //将spec字符串转化成map，map的key会自动生成Field
+        for (SkuInfo skuInfo : skuInfos) {
+            Map<String, Object> map = JSON.parseObject(skuInfo.getSpec(), Map.class);
+            skuInfo.setSpecMap(map);
+        }
+        skuEsMapper.saveAll(skuInfos);
+    }
+
     //将过滤搜索出来的StringTerms转换成List集合
     private List<String> buildGroupList(StringTerms stringTerms) {
         List<String> list = new ArrayList<>();

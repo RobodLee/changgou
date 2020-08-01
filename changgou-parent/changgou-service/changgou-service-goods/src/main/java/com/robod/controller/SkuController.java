@@ -1,12 +1,12 @@
 package com.robod.controller;
-import com.robod.goods.pojo.Sku;
-import com.robod.service.intf.SkuService;
 import com.github.pagehelper.PageInfo;
 import com.robod.entity.Result;
 import com.robod.entity.StatusCode;
-
+import com.robod.goods.pojo.Sku;
+import com.robod.service.intf.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /****
@@ -60,6 +60,17 @@ public class SkuController {
         //调用SkuService实现条件查询Sku
         List<Sku> list = skuService.findList(sku);
         return new Result<List<Sku>>(true,StatusCode.OK,"查询成功",list);
+    }
+
+    /**
+     * 根据spu_id查询对应的sku集合
+     * @param id
+     * @return
+     */
+    @GetMapping("/spu/{id}")
+    public Result<List<Sku>> findBySpuId(@PathVariable Long id){
+        List<Sku> list = skuService.findBySpuId(id);
+        return new Result<>(true,StatusCode.OK,"查询成功",list);
     }
 
     /***
@@ -122,5 +133,16 @@ public class SkuController {
         //调用SkuService实现查询所有Sku
         List<Sku> list = skuService.findAll();
         return new Result<List<Sku>>(true, StatusCode.OK,"查询成功",list) ;
+    }
+
+    /**
+     * 根据spuid删除对应的sku
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/deleteAll/{id}")
+    public Result deleteAllSkuBySpuId(@PathVariable Long id){
+        skuService.deleteAllSkuBySpuId(id);
+        return new Result<List<Sku>>(true, StatusCode.OK,"删除成功") ;
     }
 }

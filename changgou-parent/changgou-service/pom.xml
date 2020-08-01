@@ -32,5 +32,16 @@
             <artifactId>changgou-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!--api 模块-->
+        <dependency>
+            <groupId>com.robod</groupId>
+            <artifactId>changgou-service-goods-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.robod</groupId>
+            <artifactId>changgou-service-search-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

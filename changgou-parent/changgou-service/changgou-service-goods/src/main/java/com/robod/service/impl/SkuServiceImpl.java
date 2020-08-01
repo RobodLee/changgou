@@ -68,6 +68,10 @@ public class SkuServiceImpl implements SkuService {
         return skuMapper.selectByExample(example);
     }
 
+    @Override
+    public List<Sku> findBySpuId(Long id){
+        return skuMapper.findBySpuId(id);
+    }
 
     /**
      * Sku构建查询对象
@@ -202,5 +206,10 @@ public class SkuServiceImpl implements SkuService {
     @Override
     public List<Sku> findAll() {
         return skuMapper.selectAll();
+    }
+
+    @Override
+    public void deleteAllSkuBySpuId(Long id) {
+        skuMapper.deleteAllSkuBySpuId(id);
     }
 }

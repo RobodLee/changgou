@@ -1,6 +1,7 @@
 package com.robod.service.intf;
-import com.robod.goods.pojo.Sku;
 import com.github.pagehelper.PageInfo;
+import com.robod.goods.pojo.Sku;
+
 import java.util.List;
 /****
  * @Author:admin
@@ -33,6 +34,13 @@ public interface SkuService {
      */
     List<Sku> findList(Sku sku);
 
+    /**
+     * 根据spu_id查询对应的sku集合
+     * @param id
+     * @return
+     */
+    List<Sku> findBySpuId(Long id);
+
     /***
      * 删除Sku
      * @param id
@@ -63,4 +71,11 @@ public interface SkuService {
      * @return
      */
     List<Sku> findAll();
+
+    /**
+     * 根据spuid删除对应的sku
+     * @param id
+     * @return
+     */
+    void deleteAllSkuBySpuId(Long id);
 }

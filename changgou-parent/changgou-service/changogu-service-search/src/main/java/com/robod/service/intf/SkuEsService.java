@@ -1,6 +1,9 @@
 package com.robod.service.intf;
 
 import com.robod.entity.SearchEntity;
+import com.robod.goods.pojo.Sku;
+
+import java.util.List;
 
 /**
  * @author Robod
@@ -19,4 +22,18 @@ public interface SkuEsService {
      * @return
      */
     SearchEntity searchByKeywords(SearchEntity searchEntity);
+
+    /**
+     * 删除Sku集合
+     * @param list
+     * @return
+     */
+    void deleteList(List<Sku> list);
+
+    /**
+     * 修改Sku集合
+     * @param list
+     * @return
+     */
+    void updateList(List<Sku> list);
 }

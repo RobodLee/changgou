@@ -1,5 +1,6 @@
 package com.robod.mapper;
 import com.robod.goods.pojo.Sku;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -21,5 +22,13 @@ public interface SkuMapper extends Mapper<Sku> {
      */
     @Select("select * from tb_sku where spu_id=#{spuId}")
     public List<Sku> findBySpuId(long spuId);
+
+    /**
+     * 根据spuid删除对应的sku
+     * @param id
+     * @return
+     */
+    @Delete("delete * from tb_sku where spu_id=#{spuId}")
+    void deleteAllSkuBySpuId(Long id);
 
 }
