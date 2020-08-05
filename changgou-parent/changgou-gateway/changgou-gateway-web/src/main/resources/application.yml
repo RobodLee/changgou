@@ -16,7 +16,7 @@ spring:
         - id: changgou_goods_route   # 唯一标识符
           uri: http://localhost:18081
           predicates:
-            - Path=/api/**
+            - Path=/api/goods/**
           filters:
             - StripPrefix=1
             - name: RequestRateLimiter #请求数限流 名字不能随便写 ，使用默认的factory
@@ -27,6 +27,13 @@ spring:
                 redis-rate-limiter.replenishRate: 1
                 # 令牌桶的容量，允许在一秒钟内完成的最大请求数
                 redis-rate-limiter.burstCapacity: 1
+        - id: changgou_user_route   # 唯一标识符
+          uri: http://localhost:18088
+          predicates:
+            - Path=/api/user/**,/api/address/**,/api/areas/**,/api/cities/**,/api/provinces/**
+          filters:
+            - StripPrefix=1
+
   #Redis配置
   redis:
     host: 192.168.31.200
