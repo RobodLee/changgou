@@ -14,7 +14,7 @@ spring:
         min-idle: 0
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.211.132:3306/changgou_oauth?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=UTC
+    url: jdbc:mysql://192.168.31.200:3306/changgou_oauth?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=UTC
     username: root
     password: root
   main:
@@ -38,3 +38,7 @@ encrypt:
     secret: robod666                  # 密钥
     alias: robod666                   # 证书的别名
     password: robod666                # 证书密码
+
+logging:
+  level:
+    com: debug

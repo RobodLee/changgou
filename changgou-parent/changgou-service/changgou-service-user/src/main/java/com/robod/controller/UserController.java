@@ -8,6 +8,7 @@ import com.robod.entity.Result;
 import com.robod.entity.StatusCode;
 import com.robod.service.intf.UserService;
 import com.robod.user.pojo.User;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -91,6 +92,7 @@ public class UserController {
      * @param id
      * @return
      */
+    @PreAuthorize("hasAnyAuthority('admin')")
     @PutMapping(value = "/{id}")
     public Result update(@RequestBody User user, @PathVariable String id) {
         //设置主键值
@@ -117,7 +119,7 @@ public class UserController {
      * @param id
      * @return
      */
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}","/load/{id}"})
     public Result<User> findById(@PathVariable String id) {
         //调用UserService实现根据主键查询User
         User user = userService.findById(id);

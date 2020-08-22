@@ -26,12 +26,13 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
-        String token;
         //从头中获取Token
-        token = request.getHeaders().getFirst(AUTHORIZE_TOKEN);
+        String token = request.getHeaders().getFirst(AUTHORIZE_TOKEN);
+        boolean hasTokenInHeader = true;
         //请求头中没有Token就从参数中获取
         if (StringUtils.isEmpty(token)){
             token = request.getQueryParams().getFirst(AUTHORIZE_TOKEN);
+            hasTokenInHeader = false;
         }
         //参数中再没有Token就从Cookie中获取
         if (StringUtils.isEmpty(token)){
@@ -44,15 +45,22 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         if (StringUtils.isEmpty(token)){
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return response.setComplete();
+        } else {
+            if (!hasTokenInHeader) {
+                if (!(token.startsWith("brarer ") || token.startsWith("Bearer "))) {
+                    token = "Bearer " + token;
+                }
+                request.mutate().header("Authorization",token);
+            }
         }
         //Token不为空就校验Token
-        try {
-            JwtUtil.parseJWT(token);
-        } catch (Exception e) {
-            //报异常说明Token是错误的，拦截
-            response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            return response.setComplete();
-        }
+        // try {
+        //     JwtUtil.parseJWT(token);
+        // } catch (Exception e) {
+        //     //报异常说明Token是错误的，拦截
+        //     response.setStatusCode(HttpStatus.UNAUTHORIZED);
+        //     return response.setComplete();
+        // }
         return chain.filter(exchange);
     }
 

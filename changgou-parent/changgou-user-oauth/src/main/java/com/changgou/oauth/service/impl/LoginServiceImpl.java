@@ -33,9 +33,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public Map login(String username, String password, String clientId, String clientSecret, String grantType) {
-        String url = "http://" +
-                loadBalancerClient.choose("user-auth").getUri() +
-                "/oauth/token";
+        String url = loadBalancerClient.choose("user-auth").getUri() + "/oauth/token";
         //请求体
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("username", username);
