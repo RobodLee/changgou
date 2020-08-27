@@ -16,6 +16,7 @@
         <module>changgou-service-content</module>
         <module>changogu-service-search</module>
         <module>changgou-service-user</module>
+        <module>changgou-service-order</module>
     </modules>
     <artifactId>changgou-service</artifactId>
     <description>

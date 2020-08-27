@@ -5,6 +5,7 @@ import com.robod.entity.StatusCode;
 import com.robod.goods.pojo.Goods;
 import com.robod.goods.pojo.Spu;
 import com.robod.service.intf.SpuService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -110,6 +111,7 @@ public class SpuController {
      * @return
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER')")
     public Result<Spu> findById(@PathVariable Long id){
         //调用SpuService实现根据主键查询Spu
         Spu spu = spuService.findById(id);

@@ -33,6 +33,13 @@ spring:
             - Path=/api/user/**,/api/address/**,/api/areas/**,/api/cities/**,/api/provinces/**
           filters:
             - StripPrefix=1
+        #订单微服务
+        - id: changgou_order_route
+          uri: http://localhost:18089
+          predicates:
+            - Path=/api/cart/**,/api/categoryReport/**,/api/orderConfig/**,/api/order/**,/api/orderItem/**,/api/orderLog/**,/api/preferential/**,/api/returnCause/**,/api/returnOrder/**,/api/returnOrderItem/**
+          filters:
+            - StripPrefix=1
 
   #Redis配置
   redis:

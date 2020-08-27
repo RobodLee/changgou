@@ -60,12 +60,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null ) {
             return null;
         }
-        //根据用户名查询用户信息
-        //String pwd = new BCryptPasswordEncoder().encode("robod666");
         String pwd = user.getPassword();
         //创建User对象
-        String permissions = "goods_list,seckill_list";
-
+        String permissions = "USER";
         UserJwt userDetails = new UserJwt(username,pwd,AuthorityUtils.commaSeparatedStringToAuthorityList(permissions));
 
         return userDetails;

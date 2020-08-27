@@ -5,6 +5,7 @@ import com.robod.entity.StatusCode;
 import com.robod.goods.pojo.Sku;
 import com.robod.service.intf.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -112,12 +113,14 @@ public class SkuController {
         return new Result(true,StatusCode.OK,"添加成功");
     }
 
+
     /***
      * 根据ID查询Sku数据
      * @param id
      * @return
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER')")
     public Result<Sku> findById(@PathVariable Long id){
         //调用SkuService实现根据主键查询Sku
         Sku sku = skuService.findById(id);

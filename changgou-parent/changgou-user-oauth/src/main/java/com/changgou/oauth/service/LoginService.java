@@ -1,7 +1,5 @@
 package com.changgou.oauth.service;
 
-import com.changgou.oauth.util.AuthToken;
-
 import java.util.Map;
 
 /**

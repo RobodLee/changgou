@@ -1,6 +1,5 @@
 package com.robod.filter;
 
-import com.robod.entity.JwtUtil;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -26,6 +25,9 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
+        if (needlessToken(request.getURI().toString())) {
+            return chain.filter(exchange);
+        }
         //从头中获取Token
         String token = request.getHeaders().getFirst(AUTHORIZE_TOKEN);
         boolean hasTokenInHeader = true;
@@ -62,6 +64,20 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         //     return response.setComplete();
         // }
         return chain.filter(exchange);
+    }
+
+    //判断指定的uri是否不需要token就可以访问，true表示不需要
+    public boolean needlessToken(String uri) {
+        String[] uris = new String[]{
+                "/api/user/add",
+                "/api/user/login"
+        };
+        for (String s : uris) {
+            if (s.equals(uri)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

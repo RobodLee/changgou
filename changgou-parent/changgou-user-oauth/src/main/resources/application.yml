@@ -28,7 +28,7 @@ eureka:
 auth:
   ttl: 3600  #token存储到redis的过期时间
   clientId: changgou
-  clientSecret: changgou
+  clientSecret: robod666
   cookieDomain: localhost
   cookieMaxAge: -1
 

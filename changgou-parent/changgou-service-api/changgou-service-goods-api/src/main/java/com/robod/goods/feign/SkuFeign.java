@@ -47,4 +47,12 @@ public interface SkuFeign {
     @DeleteMapping("/deleteAll/{id}")
     Result deleteAllSkuBySpuId(@PathVariable Long id);
 
+    /***
+     * 根据ID查询Sku数据
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public Result<Sku> findById(@PathVariable Long id);
+
 }
