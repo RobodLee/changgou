@@ -5,6 +5,8 @@ import com.robod.entity.Result;
 import com.robod.entity.StatusCode;
 import com.robod.service.intf.AddressService;
 import com.robod.user.pojo.Address;
+import com.robod.utils.TokenDecodeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,10 +22,24 @@ import java.util.List;
 @CrossOrigin
 public class AddressController {
 
+    @Autowired
+    private TokenDecodeUtil tokenDecodeUtil;
+
     private final AddressService addressService;
 
     public AddressController(AddressService addressService) {
         this.addressService = addressService;
+    }
+
+    /**
+     * 解析token获取用户名，然后从数据库中查询出收货地址信息
+     * @return
+     */
+    @GetMapping("/user/list")
+    public Result<List<Address>> list() {
+        String username = tokenDecodeUtil.getUserInfo().get("username");
+        List<Address> addresses = addressService.list(username);
+        return new Result<>(true,StatusCode.OK,"查询成功",addresses);
     }
 
     /***

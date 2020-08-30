@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /****
  * @Author:admin
@@ -23,6 +24,17 @@ public class SkuController {
 
     @Autowired
     private SkuService skuService;
+
+    /**
+     * 根据sku_id集合查询sku集合
+     * @param skuIds
+     * @return
+     */
+    @PostMapping("/list/ids")
+    public Result<List<Sku>> findBySkuIds(@RequestBody List<Long> skuIds) {
+        List<Sku> skuList = skuService.findBySkuIds(skuIds);
+        return new Result<>(true,StatusCode.OK,"查询成功",skuList);
+    }
 
     /***
      * Sku分页条件搜索实现
@@ -98,6 +110,18 @@ public class SkuController {
         sku.setId(id);
         //调用SkuService实现修改Sku
         skuService.update(sku);
+        return new Result(true,StatusCode.OK,"修改成功");
+    }
+
+    /**
+     * 修改sku map集合
+     * @param map
+     * @return
+     */
+    @PutMapping(value="/update/map")
+    public Result updateMap(@RequestBody Map<Long,Sku> map){
+        //调用SkuService实现修改Sku
+        skuService.updateMap(map);
         return new Result(true,StatusCode.OK,"修改成功");
     }
 

@@ -2,10 +2,12 @@ package com.robod.goods.feign;
 
 import com.robod.entity.Result;
 import com.robod.goods.pojo.Sku;
+import feign.Param;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Robod
@@ -54,5 +56,30 @@ public interface SkuFeign {
      */
     @GetMapping("/{id}")
     public Result<Sku> findById(@PathVariable Long id);
+
+    /**
+     * 根据sku_id集合查询sku集合
+     * @param skuIds
+     * @return
+     */
+    @PostMapping("/list/ids")
+    Result<List<Sku>> findBySkuIds(@Param ("skuIds") List<Long> skuIds);
+
+    /***
+     * 修改Sku数据
+     * @param sku
+     * @param id
+     * @return
+     */
+    @PutMapping(value="/{id}")
+    Result update(@RequestBody Sku sku,@PathVariable Long id);
+
+    /**
+     * 修改sku map集合
+     * @param map
+     * @return
+     */
+    @PutMapping(value="/update/map")
+    Result updateMap(@RequestBody Map<Long,Sku> map);
 
 }

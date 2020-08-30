@@ -3,6 +3,8 @@ import com.github.pagehelper.PageInfo;
 import com.robod.goods.pojo.Sku;
 
 import java.util.List;
+import java.util.Map;
+
 /****
  * @Author:admin
  * @Description:Sku业务层接口
@@ -78,4 +80,17 @@ public interface SkuService {
      * @return
      */
     void deleteAllSkuBySpuId(Long id);
+
+    /**
+     * 根据sku_id集合查询sku集合
+     * @param skuIds
+     * @return
+     */
+    List<Sku> findBySkuIds(List<Long> skuIds);
+
+    /**
+     * 修改sku map集合
+     * @param map
+     */
+    void updateMap(Map<Long, Sku> map);
 }

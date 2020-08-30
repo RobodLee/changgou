@@ -6,12 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /****
  * @Author:admin
  * @Description:Order构建
- * @Date 2019/6/14 19:13
+ * @LocalDateTime 2019/6/14 19:13
  *****/
 @Data
 @Table(name="tb_order")
@@ -40,22 +41,22 @@ public class Order implements Serializable{
 	private String payType;//支付类型，1、在线支付、0 货到付款
 
     @Column(name = "create_time")
-	private Date createTime;//订单创建时间
+	private LocalDateTime createTime;//订单创建时间
 
     @Column(name = "update_time")
-	private Date updateTime;//订单更新时间
+	private LocalDateTime updateTime;//订单更新时间
 
     @Column(name = "pay_time")
-	private Date payTime;//付款时间
+	private LocalDateTime payTime;//付款时间
 
     @Column(name = "consign_time")
-	private Date consignTime;//发货时间
+	private LocalDateTime consignTime;//发货时间
 
     @Column(name = "end_time")
-	private Date endTime;//交易完成时间
+	private LocalDateTime endTime;//交易完成时间
 
     @Column(name = "close_time")
-	private Date closeTime;//交易关闭时间
+	private LocalDateTime closeTime;//交易关闭时间
 
     @Column(name = "shipping_name")
 	private String shippingName;//物流名称
@@ -98,5 +99,7 @@ public class Order implements Serializable{
 
     @Column(name = "is_delete")
 	private String isDelete;//是否删除
+
+	private List<Long> skuIds;	//选中的sku的id
 
 }

@@ -3,9 +3,7 @@ package com.robod.user.feign;
 import com.robod.entity.Result;
 import com.robod.user.pojo.User;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Robod
@@ -22,5 +20,13 @@ public interface UserFeign {
      */
     @GetMapping({"/load/{id}"})
     Result<User> findById(@PathVariable String id);
+
+    /**
+     * 添加积分
+     * @param points
+     * @return
+     */
+    @PostMapping("/addPoints")
+    Result addPoints(@RequestParam("points") int points);
 
 }

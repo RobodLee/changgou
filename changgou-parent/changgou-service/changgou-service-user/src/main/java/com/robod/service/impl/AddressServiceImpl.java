@@ -169,4 +169,9 @@ public class AddressServiceImpl implements AddressService {
     public List<Address> findAll() {
         return addressMapper.selectAll();
     }
+
+    @Override
+    public List<Address> list(String username) {
+        return addressMapper.list(username);
+    }
 }

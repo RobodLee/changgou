@@ -33,3 +33,12 @@ hystrix:
           thread:
             timeoutInMilliseconds: 10000
           strategy: SEMAPHORE
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com: debug
+

@@ -1,7 +1,7 @@
 package com.robod.service.intf;
 
-import com.robod.user.pojo.Address;
 import com.github.pagehelper.PageInfo;
+import com.robod.user.pojo.Address;
 
 import java.util.List;
 
@@ -66,4 +66,11 @@ public interface AddressService {
      * @return
      */
     List<Address> findAll();
+
+    /**
+     * 根据用户名查询收货地址
+     * @param username 用户名
+     * @return 收获地址集合
+     */
+    List<Address> list(String username);
 }

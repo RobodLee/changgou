@@ -8,6 +8,8 @@ import com.robod.entity.Result;
 import com.robod.entity.StatusCode;
 import com.robod.service.intf.UserService;
 import com.robod.user.pojo.User;
+import com.robod.utils.TokenDecodeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +30,9 @@ import java.util.UUID;
 @RequestMapping("/user")
 @CrossOrigin
 public class UserController {
+
+    @Autowired
+    private TokenDecodeUtil tokenDecodeUtil;
 
     private final UserService userService;
 
@@ -154,4 +159,17 @@ public class UserController {
         }
         return new Result<>(false,StatusCode.LOGIN_ERROR,"登录失败");
     }
+
+    /**
+     * 添加积分
+     * @param points
+     * @return
+     */
+    @PostMapping("/addPoints")
+    public Result addPoints(int points) {
+        String username = tokenDecodeUtil.getUserInfo().get("username");
+        userService.addPoints(username,points);
+        return new Result<>(false,StatusCode.LOGIN_ERROR,"积分添加成功");
+    }
+
 }

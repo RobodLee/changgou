@@ -1,7 +1,7 @@
 package com.robod.service.intf;
 
-import com.robod.user.pojo.User;
 import com.github.pagehelper.PageInfo;
+import com.robod.user.pojo.User;
 
 import java.util.List;
 
@@ -66,4 +66,11 @@ public interface UserService {
      * @return
      */
     List<User> findAll();
+
+    /**
+     * 添加积分
+     * @param username 用户
+     * @param points   积分
+     */
+    void addPoints(String username,int points);
 }

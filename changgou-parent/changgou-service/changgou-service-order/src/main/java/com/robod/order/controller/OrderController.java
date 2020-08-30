@@ -5,6 +5,7 @@ import com.robod.entity.Result;
 import com.robod.entity.StatusCode;
 import com.robod.order.api.pojo.Order;
 import com.robod.order.service.intf.OrderService;
+import com.robod.order.utils.TokenDecodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,22 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private TokenDecodeUtil tokenDecodeUtil;
+
+    /***
+     * 新增Order数据
+     * @param order
+     * @return
+     */
+    @PostMapping
+    public Result add(@RequestBody Order order){
+        String username = tokenDecodeUtil.getUserInfo().get("username");
+        order.setUsername(username);
+        orderService.add(order);
+        return new Result(true,StatusCode.OK,"添加成功");
+    }
 
     /***
      * Order分页条件搜索实现
@@ -88,18 +105,6 @@ public class OrderController {
         //调用OrderService实现修改Order
         orderService.update(order);
         return new Result(true,StatusCode.OK,"修改成功");
-    }
-
-    /***
-     * 新增Order数据
-     * @param order
-     * @return
-     */
-    @PostMapping
-    public Result add(@RequestBody   Order order){
-        //调用OrderService实现添加Order
-        orderService.add(order);
-        return new Result(true,StatusCode.OK,"添加成功");
     }
 
     /***

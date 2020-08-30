@@ -209,4 +209,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectAll();
     }
 
+    @Override
+    public void addPoints(String username,int points){
+        userMapper.addPoints(username,points);
+    }
+
 }

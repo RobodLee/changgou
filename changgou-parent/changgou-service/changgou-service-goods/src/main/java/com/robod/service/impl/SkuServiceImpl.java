@@ -9,6 +9,9 @@ import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /****
  * @Author:admin
  * @Description:Sku业务层接口实现类
@@ -23,6 +26,24 @@ public class SkuServiceImpl implements SkuService {
         this.skuMapper = skuMapper;
     }
 
+    @Override
+    public List<Sku> findBySkuIds(List<Long> skuIds) {
+        StringBuilder builder = new StringBuilder();
+        for (Long skuId : skuIds) {
+            builder.append(skuId).append(",");
+        }
+        builder.deleteCharAt(builder.length()-1);
+        return skuMapper.findBySkuIds(builder.toString());
+    }
+
+    @Override
+    public void updateMap(Map<Long, Sku> map) {
+        Set<Long> skuIds = map.keySet();
+        for (Long id : skuIds) {
+            Sku sku = map.get(id);
+            skuMapper.updateByPrimaryKeySelective(sku);
+        }
+    }
 
     /**
      * Sku条件+分页查询
