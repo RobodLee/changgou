@@ -9,5 +9,7 @@
    + [畅购商城(七)：Thymeleaf实现静态页](https://mp.weixin.qq.com/s/4i_daTCYmCUiwrKPldDFQA)
    + [畅购商城(八)：微服务网关和JWT令牌](https://mp.weixin.qq.com/s/YrMqp7WT2ByEHMfARhLotw)
    + [畅购商城(九)：Spring Security Oauth2](https://mp.weixin.qq.com/s/SFNGyVkr8wOmLmYTDycHXw)
-
-![微信公众号](https://gitee.com/RobodLee/image_store/raw/master/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.png)
+   + [畅购商城(十)：购物车](https://mp.weixin.qq.com/s/pAtA4HRt-LTWrGH-J9iHCA)
+   + [畅购商城(十一)：订单](https://mp.weixin.qq.com/s/_trFUjuzq20FsR6jRQNgZA)
+  
+![微信公众号](https://gitee.com/RobodLee/image_store/raw/master/QRcode2.0.png)

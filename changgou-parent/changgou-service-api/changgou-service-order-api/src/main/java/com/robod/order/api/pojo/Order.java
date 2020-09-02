@@ -26,7 +26,7 @@ public class Order implements Serializable{
 	private Integer totalNum;//数量合计
 
     @Column(name = "total_money")
-	private Integer totalMoney;//金额合计
+	private Double totalMoney;//金额合计
 
     @Column(name = "pre_money")
 	private Integer preMoney;//优惠金额

@@ -17,6 +17,7 @@
         <module>changogu-service-search</module>
         <module>changgou-service-user</module>
         <module>changgou-service-order</module>
+        <module>changgou-service-wechatpay</module>
     </modules>
     <artifactId>changgou-service</artifactId>
     <description>
