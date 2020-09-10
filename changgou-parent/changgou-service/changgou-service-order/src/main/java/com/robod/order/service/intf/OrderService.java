@@ -12,6 +12,20 @@ import java.util.List;
  *****/
 public interface OrderService {
 
+    /**
+     * 订单支付成功后修改订单的状态
+     * @param outTradeNo    商户订单号
+     * @param timeEnd       付款时间
+     * @param transactionId 微信支付订单号-交易流水号
+     */
+    void updateStatus(String outTradeNo,String timeEnd,String transactionId);
+
+    /**
+     * 交易失败，删除订单，不是真的删除，只是将支付状态改为”2“，支付失败
+     * @param outTradeNo
+     */
+    void deleteOrder(String outTradeNo);
+
     /***
      * Order多条件分页查询
      * @param order

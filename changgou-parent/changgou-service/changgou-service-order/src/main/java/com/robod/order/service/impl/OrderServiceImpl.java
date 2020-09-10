@@ -19,6 +19,8 @@ import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,6 +50,42 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private UserFeign userFeign;
+
+    @Override
+    public void updateStatus(String outTradeNo,String timeEnd,String transactionId) {
+        Order order = orderMapper.findById(outTradeNo);
+        LocalDateTime payTime = LocalDateTime.parse(timeEnd, DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
+        order.setPayStatus("1");                //支付状态修改为1表示已支付
+        order.setTransactionId(transactionId);  //交易流水号
+        order.setPayTime(payTime);              //交易时间
+
+        orderMapper.updateByPrimaryKey(order);
+    }
+
+    @Override
+    public void deleteOrder(String outTradeNo) {
+        Order order = orderMapper.findById(outTradeNo);
+        LocalDateTime time = LocalDateTime.now();
+        //修改状态
+        order.setPayStatus("2");    //交易失败
+        order.setUpdateTime(time);
+        //提交到数据库
+        orderMapper.updateByPrimaryKey(order);
+        //回滚库存
+        List<OrderItem> orderItems = orderItemMapper.findByOrderId(order.getId());
+        List<Long> skuIds = new ArrayList<>();
+        for (OrderItem orderItem : orderItems) {
+            skuIds.add(orderItem.getSkuId());
+        }
+        List<Sku> skuList = skuFeign.findBySkuIds(order.getSkuIds()).getData(); //数据库中对应的sku集合
+        Map<Long, Sku> skuMap = skuList.stream().collect(Collectors.toMap(Sku::getId, a -> a));
+        for (OrderItem orderItem : orderItems) {
+            Sku sku = skuMap.get(orderItem.getSkuId());
+            sku.setNum(sku.getNum()+orderItem.getNum());    //加库存
+        }
+        skuFeign.updateMap(skuMap);
+    }
 
     /**
      * 增加Order
@@ -98,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
         order.setCreateTime(localDateTime);
         order.setUpdateTime(localDateTime);
         order.setTotalNum(totalNum);
-        order.setTotalMoney(totalMoney);
+        order.setTotalMoney((double)totalMoney);
         order.setSourceType("1");   //1.web
         order.setOrderStatus("0");
         order.setPayStatus("0");

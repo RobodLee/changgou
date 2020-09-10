@@ -24,4 +24,11 @@ public interface WeChatPayService {
      */
     Map<String,String> queryPayStatus(String outTradeNo);
 
+    /**
+     * 关闭订单
+     * @param outTradeNo    商户订单号
+     * @return
+     * @throws Exception
+     */
+    Map<String, String> closeOrder(String outTradeNo) throws Exception;
 }

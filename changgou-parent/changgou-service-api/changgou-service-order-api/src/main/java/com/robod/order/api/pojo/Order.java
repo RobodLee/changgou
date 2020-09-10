@@ -100,6 +100,6 @@ public class Order implements Serializable{
     @Column(name = "is_delete")
 	private String isDelete;//是否删除
 
-	private List<Long> skuIds;	//选中的sku的id
+	private List<Long> skuIds;	//选中的sku的id,前端传过来的，不存到数据库中
 
 }

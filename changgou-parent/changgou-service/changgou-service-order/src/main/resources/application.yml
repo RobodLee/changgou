@@ -13,6 +13,11 @@ spring:
     port: 6379
   main:
     allow-bean-definition-overriding: true
+  rabbitmq:
+    host: 192.168.31.200
+    port: 5672
+    username: root
+    password: 123456
 
 eureka:
   client:
@@ -41,4 +46,3 @@ mybatis:
 logging:
   level:
     com: debug
-

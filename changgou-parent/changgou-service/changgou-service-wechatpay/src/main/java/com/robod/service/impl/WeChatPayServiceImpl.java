@@ -70,4 +70,13 @@ public class WeChatPayServiceImpl implements WeChatPayService {
         return null;
     }
 
+    @Override
+    public Map<String, String> closeOrder(String outTradeNo) throws Exception {
+        Map<String, String> map = new HashMap<>(16);
+        map.put("out_trade_no", outTradeNo);      //商户订单号
+        MyWXPayConfig config = new MyWXPayConfig(appId,mcnId, key);
+        WXPay wxpay = new WXPay(config,notifyUrl);
+        return wxpay.closeOrder(map);
+    }
+
 }

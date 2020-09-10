@@ -5,6 +5,12 @@ spring:
     name: wechatpay
   main:
     allow-bean-definition-overriding: true
+  rabbitmq:
+    host: 192.168.31.200
+    port: 5672
+    username: root
+    password: 123456
+
 eureka:
   client:
     service-url:
@@ -34,4 +40,4 @@ wechat:
   # 密钥
   key: T6m9iK73b0kn9g5v426MKfHQH7X8rKwb
   # 支付回调地址
-  notify_url: http://www.itcast.cn
+  notify_url: http://robod123.cn1.utools.club/wechat/pay/notify/url
