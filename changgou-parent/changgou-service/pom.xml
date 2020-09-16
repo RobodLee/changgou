@@ -18,6 +18,7 @@
         <module>changgou-service-user</module>
         <module>changgou-service-order</module>
         <module>changgou-service-wechatpay</module>
+        <module>changgou-service-seckill</module>
     </modules>
     <artifactId>changgou-service</artifactId>
     <description>
