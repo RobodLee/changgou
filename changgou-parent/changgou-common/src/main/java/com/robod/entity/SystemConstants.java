@@ -27,8 +27,19 @@ public class SystemConstants {
 
 
     /**
+     * 秒杀商品的队列
+     */
+    public static final String SEC_KILL_GOODS_COUNT_LIST = "SeckillGoodsCountList_";
+
+
+    /**
      * 用户排队标识的key (用于存储 谁 买了什么商品 以及抢单的状态)
      */
-
     public static final String SEC_KILL_USER_STATUS_KEY = "UserQueueStatus";
+
+    /**
+     * 记录用户排队的次数
+     */
+    public static final String SEC_KILL_USER_QUEUE_COUNT = "UserQueueCount";
+
 }

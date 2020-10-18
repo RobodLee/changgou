@@ -1,11 +1,13 @@
 package com.robod.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.wxpay.sdk.WXPay;
 import com.robod.entity.MyWXPayConfig;
 import com.robod.order.api.pojo.Order;
 import com.robod.service.intf.WeChatPayService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +40,18 @@ public class WeChatPayServiceImpl implements WeChatPayService {
             map.put("total_fee", String.valueOf((int)(order.getTotalMoney() * 100))); //标价金额,单位为分
             map.put("spbill_create_ip", "127.0.0.1");    //终端IP
             map.put("trade_type", "NATIVE ");    //交易类型，JSAPI -JSAPI支付,NATIVE -Native支付,APP -APP支付
+
+            //获取exchange和routingKey，封装程map集合，添加到attach参数中
+            String exchange = order.getExchange();
+            String routingKey = order.getRoutingKey();
+            Map<String,String> attachMap = new HashMap<>(2);
+            attachMap.put("exchange",exchange);
+            attachMap.put("routingKey",routingKey);
+            if (!StringUtils.isEmpty(order.getUsername())) {
+                attachMap.put("username",order.getUsername());
+            }
+            String attach = JSON.toJSONString(attachMap);
+            map.put("attach",attach);
 
             MyWXPayConfig config = new MyWXPayConfig(appId,mcnId, key);
             WXPay wxpay = new WXPay(config,notifyUrl);

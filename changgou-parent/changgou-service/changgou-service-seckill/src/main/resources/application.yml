@@ -46,3 +46,12 @@ logging:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+
+mq:
+  pay:
+    exchange:
+      order: exchange.seckill_order
+    queue:
+      seckillorder: queue.seckillorder
+    routing:
+      key: routing.seckill_order

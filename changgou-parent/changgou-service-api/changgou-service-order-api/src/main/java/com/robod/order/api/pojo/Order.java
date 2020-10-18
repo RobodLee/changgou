@@ -102,4 +102,8 @@ public class Order implements Serializable{
 
 	private List<Long> skuIds;	//选中的sku的id,前端传过来的，不存到数据库中
 
+	private String exchange;	//mq交换机的名称
+
+	private String routingKey;	//mq的路由键
+
 }

@@ -48,9 +48,25 @@ public class SeckillGoodsPushTask {
                  seckillGoods = mapper.findSeckillGoods(date);
             }
             for (SeckillGoods seckillGood : seckillGoods) {
-                boundHashOperations.put(seckillGood.getId(),seckillGood);
+                boundHashOperations.put(seckillGood.getId(),seckillGood);   //把商品存入到redis
+
+                redisTemplate.boundListOps(SystemConstants.SEC_KILL_GOODS_COUNT_LIST + seckillGood.getId())
+                        .leftPushAll(getGoodsNumber(seckillGood.getNum()));
             }
         }
+    }
+
+    /**
+     * 获取秒杀商品数量的数组
+     * @return
+     * @param num
+     */
+    public Byte[] getGoodsNumber(int num) {
+        Byte[] arr = new Byte[num];
+        for (int i = 0; i < num; i++) {
+            arr[i] = '0';
+        }
+        return arr;
     }
 
 }

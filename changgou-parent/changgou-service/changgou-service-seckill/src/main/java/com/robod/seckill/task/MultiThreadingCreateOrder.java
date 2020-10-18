@@ -39,10 +39,20 @@ public class MultiThreadingCreateOrder {
         SeckillStatus seckillStatus = (SeckillStatus) redisTemplate.boundListOps(SystemConstants.SEC_KILL_USER_QUEUE_KEY).rightPop();
 
         BoundHashOperations seckillGoodsBoundHashOps = redisTemplate.boundHashOps(SystemConstants.SEC_KILL_GOODS_PREFIX + seckillStatus.getTime());
+
         SeckillGoods seckillGoods = (SeckillGoods)seckillGoodsBoundHashOps.get(seckillStatus.getGoodsId());   //从redis中查询出秒杀商品
         if (seckillGoods == null || seckillGoods.getStockCount() <=0 ) {
             throw new RuntimeException("已售罄");
         }
+        //从秒杀商品队列中获取数据，如果获取不到则说明已经卖完了，清除掉排队信息
+        Object o = redisTemplate.boundListOps(SystemConstants.SEC_KILL_GOODS_COUNT_LIST + seckillGoods.getId())
+                .rightPop();
+        if (o == null) {
+            redisTemplate.boundHashOps(SystemConstants.SEC_KILL_USER_QUEUE_COUNT).delete(seckillStatus.getUsername());  //清除排队队列
+            redisTemplate.boundHashOps(SystemConstants.SEC_KILL_USER_STATUS_KEY).delete(seckillStatus.getUsername());   //排队状态队列
+            return;
+        }
+
         //创建秒杀订单
         SeckillOrder seckillOrder = new SeckillOrder();
         seckillOrder.setSeckillId(seckillGoods.getId());
@@ -54,8 +64,11 @@ public class MultiThreadingCreateOrder {
         redisTemplate.boundHashOps(SystemConstants.SEC_KILL_ORDER_KEY).put(seckillStatus.getUsername(),seckillOrder);
 
         //减库存，如果库存没了就从redis中删除，并将库存数据写到MySQL中
-        seckillGoods.setStockCount(seckillGoods.getStockCount()-1);
-        if (seckillGoods.getStockCount() <= 0) {
+        //seckillGoods.setStockCount(seckillGoods.getStockCount()-1);
+        Long size = redisTemplate.boundListOps(SystemConstants.SEC_KILL_GOODS_COUNT_LIST + seckillGoods.getId()).size();//获取库存
+        //if (seckillGoods.getStockCount() <= 0) {
+        seckillGoods.setNum(size.intValue());
+        if (size <= 0) {
             seckillGoodsBoundHashOps.delete(seckillStatus.getGoodsId());
             seckillGoodsMapper.updateByPrimaryKeySelective(seckillGoods);
         } else {

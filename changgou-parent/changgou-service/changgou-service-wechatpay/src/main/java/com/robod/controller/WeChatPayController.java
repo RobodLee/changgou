@@ -1,5 +1,7 @@
 package com.robod.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.github.wxpay.sdk.WXPayUtil;
 import com.robod.entity.Result;
 import com.robod.entity.StatusCode;
 import com.robod.order.api.pojo.Order;
@@ -43,9 +45,13 @@ public class WeChatPayController {
             outputStream.write(buffer,0,len);
         }
         String xmlString = outputStream.toString("UTF-8");
+        Map<String, String> xmlMap = WXPayUtil.xmlToMap(xmlString);
+        String attach = xmlMap.get("attach");
+        Map<String, String> attachMap = JSONObject.parseObject(attach, Map.class);
 
         //将java对象转换成amqp消息发送出去，调用的是send方法
-        rabbitTemplate.convertAndSend("exchange.order","routing.order", xmlString);
+        //rabbitTemplate.convertAndSend("exchange.order","routing.order", xmlString);
+        rabbitTemplate.convertAndSend(attachMap.get("exchange"),attachMap.get("routingKey"), xmlString);
 
         return  "<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>";
     }

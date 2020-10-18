@@ -84,4 +84,17 @@ public interface SeckillOrderService {
      */
     SeckillStatus queryStatus(String username);
 
+    /**
+     * 支付成功后修改订单状态
+     * @param username
+     * @param transactionId
+     * @param endTime
+     */
+    void updatePayStatus(String username,String transactionId,String endTime);
+
+    /**
+     * 删除秒杀订单
+     * @param username
+     */
+    void deleteOrder(String username);
 }
