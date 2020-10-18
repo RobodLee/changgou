@@ -22,6 +22,6 @@
    + [畅购商城(十一)：订单](https://mp.weixin.qq.com/s/_trFUjuzq20FsR6jRQNgZA)
    + [畅购商城(十二)：接入微信支付](https://mp.weixin.qq.com/s/ErgN_fQEZi06JKqO1xaA6Q)
    + [畅购商城(十三)：秒杀系统「上」](https://mp.weixin.qq.com/s/HPJrHHFX4azmzWVa4K-BdA)
-   + [畅购商城(十三)：秒杀系统「下」](https://mp.weixin.qq.com/s/8xHDjf3NirA-aQxS4xsOUQ)
+   + [畅购商城(十四)：秒杀系统「下」](https://mp.weixin.qq.com/s/8xHDjf3NirA-aQxS4xsOUQ)
    
 ![微信公众号](https://gitee.com/RobodLee/image_store/raw/master/QRcode2.0.png)
